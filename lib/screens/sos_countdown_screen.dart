@@ -45,7 +45,7 @@ class _SosCountdownScreenState extends State<SosCountdownScreen> {
       final count = result['count'] ?? 0;
       
       if (count == 0) {
-        // NO USERS NEARBY - show different message
+      
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
@@ -66,7 +66,7 @@ class _SosCountdownScreenState extends State<SosCountdownScreen> {
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  // Call emergency number
+                 
                   _callEmergency();
                 },
                 child: const Text('📞 Call 112'),
@@ -75,7 +75,7 @@ class _SosCountdownScreenState extends State<SosCountdownScreen> {
           ),
         );
       } else {
-        // SUCCESS WITH USERS
+
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
@@ -94,7 +94,7 @@ class _SosCountdownScreenState extends State<SosCountdownScreen> {
         );
       }
     } else {
-      // ACTUAL FAILURE
+   
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -111,7 +111,7 @@ class _SosCountdownScreenState extends State<SosCountdownScreen> {
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
-                // Retry emergency
+               
                 _triggerEmergency();
               },
               child: const Text('🔄 Try Again'),
@@ -213,4 +213,5 @@ class _SosCountdownScreenState extends State<SosCountdownScreen> {
       ),
     );
   }
+
 }
