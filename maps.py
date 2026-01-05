@@ -1,102 +1,3 @@
-'''import math
-from fastapi import FastAPI 
-from pydantic import BaseModel 
-
-
-app = FastAPI() 
-
-class creds(BaseModel):
-    user_id: str 
-    lon: float 
-    lat: float
-
-
-def haversine(lat1, lon1, lat2, lon2):
-    R = 6371  # km
-
-    phi1 = math.radians(lat1)
-    phi2 = math.radians(lat2)
-
-    dphi = math.radians(lat2 - lat1)
-    dlambda = math.radians(lon2 - lon1)
-
-    a = math.sin(dphi/2)**2 + \
-        math.cos(phi1)*math.cos(phi2)*math.sin(dlambda/2)**2
-
-    return 2 * R * math.atan2(math.sqrt(a), math.sqrt(1 - a))
-
-
-#users = {"user_id": {lon: "", lat: ""}}
-users = {}
-
-@app.post("/location/update")
-def update_location(data: creds):
-    users[data.user_id] = {
-       'lon' : data.lon ,
-       'lat' : data.lat 
-    } 
-
-    return {"message": "Location updated"}
-
-@app.get("/location/{user_id}")
-def get_location(user_id: str):
-       for i in users.keys():
-            if i == user_id:
-                return users[user_id]
-            
-       return {"error": "User does not exist"}
- 
-def find_nearby_users(user_id: str, radius: float = 1.5): 
-    if user_id not in users:
-         return []
-    
-    results = [] 
-    base = users[user_id]
-
-
-    for id, loc in users.items():
-         if id == user_id:
-              continue 
-         else:
-              dist = haversine(
-                   base["lat"], base["lon"],
-                   loc["lat"], loc["lon"]
-              )
-
-         if dist<= radius:
-              results.append(
-                   {
-                        "id": id, 
-                        "lat": loc["lat"],
-                        "lon": loc["lon"],
-                        "distance": round(dist,2)
-                   }
-              )
-
-    return results
-
-@app.get("/location/nearby/{user_id}")
-def get_users_nearby(user_id: str, radius: float=1.5):
-     if user_id not in users:
-          return [] 
-     
-     return find_nearby_users(user_id, radius)
-
-@app.post("/emergency/{user_id}")
-def trigger_sos(user_id: str):
-     nearby_users = find_nearby_users(user_id, radius=1.5) 
-
-     notified_users = [] 
-     for i in nearby_users:
-          notified_users.append(i['user_id'])
-          
-     return {
-          "message": "Emergency triggered",
-          "notified users": notified_users,
-          "Count": len(notified_users)
-     }
-'''
-
 import math
 import time
 import uvicorn
@@ -107,12 +8,12 @@ from typing import Optional
 import firebase_admin
 from firebase_admin import credentials, messaging
 
-# Initialize Firebase only once to avoid duplicate initialization
+
 def initialize_firebase_once():
     try:
-        # Check if Firebase is already initialized
+      
         if not firebase_admin._apps:
-            # Update path to your service account key
+           
             cred = credentials.Certificate(
                 "D:/GDG project/safety-app-7b396-firebase-adminsdk-fbsvc-bbaa11dcce.json"
             )
@@ -123,15 +24,14 @@ def initialize_firebase_once():
     except Exception as e:
         print(f"❌ Firebase initialization error: {e}")
 
-# Call initialization once
+
 initialize_firebase_once()
 
 app = FastAPI()
 
-# CORS middleware to allow Flutter app to connect
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # For development only
+    allow_origins=["*"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -142,12 +42,12 @@ class LocationUpdate(BaseModel):
     user_id: str 
     lon: float 
     lat: float
-    fcm_token: Optional[str] = None  # Add FCM token field
+    fcm_token: Optional[str] = None  
 
 
 def haversine(lat1, lon1, lat2, lon2):
     """Calculate distance between two coordinates in kilometers"""
-    R = 6371  # Earth radius in km
+    R = 6371  
     
     phi1 = math.radians(lat1)
     phi2 = math.radians(lat2)
@@ -158,7 +58,6 @@ def haversine(lat1, lon1, lat2, lon2):
     return 2 * R * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 
 
-# In-memory storage (in production, use a database)
 users = {}  # Format: {user_id: {'lat': x, 'lon': y, 'fcm_token': 'xyz'}}
 
 
@@ -325,3 +224,4 @@ if __name__ == "__main__":
         port=8000,
         reload=True
     )
+
