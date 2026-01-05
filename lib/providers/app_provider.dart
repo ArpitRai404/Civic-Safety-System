@@ -21,7 +21,7 @@ class AppProvider extends ChangeNotifier {
   String? _fcmToken;
   bool _firebaseInitialized = false;
 
-  // Getters
+  
   String? get userId => _userId;
   Position? get currentPosition => _currentPosition;
   List<UserLocation> get nearbyUsers => _nearbyUsers;
@@ -89,7 +89,7 @@ class AppProvider extends ChangeNotifier {
     
     log('✅ Location permission granted');
     
-    // Get initial location
+  
     _currentPosition = await LocationService.getCurrentLocation();
     if (_currentPosition != null) {
       log('📍 Initial location: ${_currentPosition!.latitude}, ${_currentPosition!.longitude}');
@@ -97,7 +97,7 @@ class AppProvider extends ChangeNotifier {
     }
     notifyListeners();
 
-    // Start listening to location updates
+
     _locationSubscription = LocationService.getLocationStream().listen(
       (position) async {
         _currentPosition = position;
@@ -116,7 +116,7 @@ class AppProvider extends ChangeNotifier {
   Future<void> _updateServerLocation() async {
     if (_currentPosition == null || _userId == null) return;
     
-    // Refresh FCM token if needed
+
     if (_fcmToken == null) {
       _fcmToken = FirebaseService.fcmToken;
     }
@@ -176,7 +176,7 @@ class AppProvider extends ChangeNotifier {
       log('   Notified ${result['count']} users');
       log('   Users: ${result['notified_users']}');
       
-      // Add emergency to our own alerts list
+ 
       final emergencyAlert = EmergencyAlert(
         victimId: _userId!,
         victimName: 'You',
@@ -191,7 +191,7 @@ class AppProvider extends ChangeNotifier {
     }
   }
 
-  // Handle incoming emergency from other users
+
   void handleIncomingEmergency({
     required String victimId,
     required double lat,
@@ -246,4 +246,5 @@ class AppProvider extends ChangeNotifier {
     log('♻️ AppProvider disposed');
     super.dispose();
   }
+
 }
