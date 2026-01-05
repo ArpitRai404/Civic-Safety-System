@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-// REMOVE this import: import 'firebase_options.dart';
+
 import 'providers/app_provider.dart';
 import 'screens/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Initialize Firebase WITHOUT options (temporary)
+
   await Firebase.initializeApp();
   
   runApp(const SafetyApp());
@@ -31,8 +31,9 @@ class SafetyApp extends StatelessWidget {
           ),
           useMaterial3: true,
         ),
-        home: const HomeScreen(), // REMOVE AppWrapper for now
+        home: const HomeScreen(), 
       ),
     );
   }
+
 }
