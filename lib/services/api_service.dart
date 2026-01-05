@@ -20,7 +20,7 @@ class ApiService {
         'lon': lon,
       };
       
-      // Add FCM token if available
+  
       if (fcmToken != null && fcmToken.isNotEmpty) {
         requestBody['fcm_token'] = fcmToken;
         log('📡 Sending location with FCM token');
@@ -54,7 +54,7 @@ class ApiService {
     }
   }
 
-  /// Get specific user's location
+
   static Future<UserLocation?> getLocation(String userId) async {
     try {
       final response = await http.get(
@@ -83,7 +83,7 @@ class ApiService {
     }
   }
 
-  /// Get nearby users within radius
+
   static Future<List<UserLocation>> getNearbyUsers(
     String userId, {
     double radius = 1.5,
@@ -109,7 +109,6 @@ class ApiService {
     }
   }
 
-  /// Trigger emergency alert
   static Future<Map<String, dynamic>?> triggerEmergency(String userId) async {
     try {
       log('🚨 Triggering emergency for user: $userId');
@@ -147,7 +146,7 @@ class ApiService {
     }
   }
 
-  /// Test notification endpoint
+
   static Future<Map<String, dynamic>?> testNotification(String userId) async {
     try {
       final response = await http.get(
@@ -163,4 +162,5 @@ class ApiService {
       return null;
     }
   }
+
 }
